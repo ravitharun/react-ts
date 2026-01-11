@@ -9,6 +9,8 @@ function Todo() {
     const [todoName, settodoname] = useState("")
     const [todoDate, settododate] = useState("")
     const [isopen, setopen] = useState<boolean>()
+
+
     const [gettodo, setodo] = useState<tododata[]>([{
         id: String(Date.now()),
         todoName: "todo",
@@ -60,9 +62,46 @@ function Todo() {
             setopen(false)
         }
     }
+
+
+    const [themes, settheme] = useState(true)
+    const handelmode = () => {
+
+
+        settheme((prev) => !prev)
+
+
+    }
+    console.log(themes, 'themes')
     return (
         <>
-            <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+
+
+            <div className="flex items-center gap-3">
+                <span className="text-sm font-medium">
+                    {themes ? "Dark Mode" : "Light Mode"}
+                </span>
+
+                <button
+                    onClick={handelmode}
+                    className={`relative w-14 h-7 rounded-full transition-colors duration-300
+      ${themes ? "bg-gray-700" : "bg-yellow-400"}`}
+                >
+                    <span
+                        className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow-md
+        transition-transform duration-300
+        ${themes ? "translate-x-7" : "translate-x-0"}`}
+                    />
+                </button>
+            </div>
+
+
+            <br />
+            <br />
+            <br />
+
+            {/* <div className={`${themes ? 'bg-gray-500' : 'bg-white'}`}>themesthemesthemes</div> */}
+            <div className={`min-h-screen bg-gray-100 flex items-center justify-center p-4  ${themes ? 'bg-gray-800  ' : 'bg-white'}`}>
                 <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6">
 
                     {/* Header */}
