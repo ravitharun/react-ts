@@ -1,13 +1,16 @@
-import React, { useState, type ChangeEvent } from 'react'
+import { useState } from 'react'
 
 function Todo() {
     type tododata = {
+        id: string,
         todoName: string,
-        todoDate: string
+        todoDate?: string
     }
     const [todoName, settodoname] = useState("")
     const [todoDate, settododate] = useState("")
+    const [isopen, setopen] = useState<boolean>()
     const [gettodo, setodo] = useState<tododata[]>([{
+        id: String(Date.now()),
         todoName: "todo",
         todoDate: "12/2/22"
     }])
@@ -15,16 +18,48 @@ function Todo() {
     const addtodo = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const dataFromTodo: tododata = {
+        let dataFromTodo: tododata = {
+            id: String(Date.now()),
             todoName,
-            todoDate
+            todoDate: !todoDate ? String(Date.now()) : String(todoDate)
         }
+        console.log(dataFromTodo, 'dataFromTodo')
+        if (!dataFromTodo.todoName) {
+            return alert("required to add soemthing innthe todo")
+        }
+        console.log(dataFromTodo, 'dataFromTodo')
         let up = [...gettodo, dataFromTodo]
         setodo(up)
 
     }
 
+
+    const handeldelte = (id: String) => {
+        const filterdelted = gettodo.filter((todoid) => todoid.id != id)
+        setodo(filterdelted)
+    }
+
     // console.log(gettodo)
+    type paramter = {
+        id: number,
+        isshow: boolean
+    }
+    const handeloptions = (data: paramter, check: paramter) => {
+        const infotopen = {
+
+            id: Number(data),
+            isshow: check
+        }
+
+        const filterdelted = gettodo.filter((todoid) => Number(todoid.id) == Number(infotopen.id))
+        if (Number(filterdelted[0].id) == infotopen.id) {
+            return setopen(true)
+
+        }
+        else {
+            setopen(false)
+        }
+    }
     return (
         <>
             <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -70,17 +105,24 @@ function Todo() {
 
                     {/* Todo List */}
                     <div className="mt-6 space-y-3">
-                        {gettodo?.map((data, idx) => (
-                            <div
-                                key={idx}
-                                className="flex justify-between items-center bg-gray-50 p-3 rounded-lg border"
-                            >
-                                <div>
-                                    <p className="font-medium text-gray-800">{data.todoName}</p>
-                                    <p className="text-sm text-gray-500">{data.todoDate}</p>
+                        {gettodo.length == 0 ?
+
+                            <center>
+
+                                No Todo is Added
+                            </center> :
+                            gettodo?.map((data, idx) => (
+                                <div
+                                    key={idx}
+                                    className="flex justify-between items-center bg-gray-50 p-3 rounded-lg border"
+                                >
+                                    <div onClick={() => handeloptions(data.id, true)}>
+                                        <p className="font-medium text-gray-800">{data.todoName}</p>
+                                        <p className="text-sm text-gray-500">{data.todoDate}</p>
+                                        {isopen ? <button onClick={() => handeldelte(data.id)}>Deleted</button> : ""
+                                        }                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
                     </div>
 
                 </div>
