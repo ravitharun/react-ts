@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function Todo() {
     type tododata = {
@@ -16,6 +16,8 @@ function Todo() {
         todoName: "todo",
         todoDate: "12/2/22"
     }])
+
+
 
     const addtodo = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -76,7 +78,7 @@ function Todo() {
     return (
         <>
 
-
+            {/* <h2>{Timer}</h2> */}
             <div className="flex items-center gap-3">
                 <span className="text-sm font-medium">
                     {themes ? "Dark Mode" : "Light Mode"}
